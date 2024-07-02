@@ -27,21 +27,9 @@ from utils import save_batch_ilp, PathBuilder
 # ====================================================================================== #
 
 from models.segformer import build_segformer_b0 as build_model
-exp_name: str = "PMHA-NET-ISIC2018"
+exp_name: str = "PMHA-NET"
 
-# from models.swinunet import build_model
-# exp_name: str = "swinunet_2018"
 
-# from models.hiformer import build_model
-# exp_name: str = "hiformer"
-
-# from models.unet import build_model
-# exp_name: str = "Unet_2018"
-
-# from models.transunet import build_model
-# exp_name: str = "transunet_ph2"
-
-# ====================================================================================== #
 
 torch.set_float32_matmul_precision("medium")
 device: str = "cuda" if torch.cuda.is_available() else "cpu"
@@ -101,12 +89,12 @@ class ISIC(L.LightningModule):
             ToTensorV2(transpose_mask=True)
         ])
 
-        # E:\ccw\dataset\segformer_data\ISIC2018-224×224\train
+
 
         train_transform = train_transform0
         logger.info(f"Training transform: {train_transform}")
         self.train_dataset = ISICDataset(
-            root=r"G:/text/segformer_data/no_n/ISIC2018-224-224/train",
+            root=r"ISIC2018-224-224/train",
             image_folder_name="images", label_folder_name="masks",
             transform=train_transform,
         )
@@ -114,18 +102,17 @@ class ISIC(L.LightningModule):
         val_transform = val_transform0
         logger.info(f"Validation transform: {val_transform}")
         self.val_dataset = ISICDataset(
-            root=r"G:/text/segformer_data/no_n/ISIC2018-224-224/val",
+            root=r"ISIC2018-224-224/val",
             image_folder_name="images", label_folder_name="masks",
             transform=val_transform,
         )
 
-        # E:\ccw\dataset\segformer_data\PH2-224\val
-        # E:\ccw\dataset\segformer_data\ISIC2017-224-224\test
+        
 
         test_transform = val_transform0
         logger.info(f"Testing transform: {val_transform}")
         self.test_dataset = ISICDataset(
-            # root=r"E:\ccw\dataset\segformer_data\ISIC2018-224-224\test",
+            # root=r"ISIC2018-224-224\test",
             root=r"G:/text/BG/test",
             image_folder_name="images", label_folder_name="masks",
             transform=test_transform,
@@ -307,14 +294,12 @@ if __name__ == "__main__":
 
     train_full(f"log/{exp_name}")
 
-    # model = ISIC.load_from_checkpoint(f"/E:/project/project/Ours/log/PMHA-NET-ISIC2016-224-224-no-n/checkpoints/epoch=098-val_mean_dice=0.9341.ckpt")
+    # model = ISIC.load_from_checkpoint(f"pmaanet.ckpt")
     # trainer = L.Trainer()
     # trainer.test(model)
     # input_size = (1, 3, 224, 224)
     # input = torch.randn(input_size)
-    # flops, params = profile(model, (input,))
-    # print('FLOPs: ' + str(flops / 1000 ** 3) + 'G')
-    # print('Params: ' + str(params / 1000 ** 2) + 'M')
+   
 
 
 
